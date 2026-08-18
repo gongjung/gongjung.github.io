@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8월 3차 경기지역단 매출 시상금 계산기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#e6007e;
+    --pink-strong:#c2006a;
+    --pink-soft:#fde7f2;
+    --blue-soft:#eaf2fb;
+    --yellow-soft:#fff6cf;
+    --yellow-ink:#8a6d00;
+    --ink:#22262b;
+    --sub:#726b76;
+    --line:#e6e1e6;
+    --bg:#f7f5f7;
+    --card:#ffffff;
+    --muted-bg:#f2eef2;
+    --good:#0f9d58;
+    --warn:#d93025;
+    --warn-bg:#fdecea;
+    --warn-border:#f6c6c1;
+    --field-bg:#fafafa;
+    --field-bg-focus:#ffffff;
+    --result-border:#f6c9e2;
+    --dash-border:#f0b8d9;
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --pink:#ff5ba3;
+      --pink-soft:#3a1830;
+      --blue-soft:#182636;
+      --yellow-soft:#332b14;
+      --yellow-ink:#e8c766;
+      --ink:#f1edf1;
+      --sub:#b3a9b2;
+      --line:#3a333b;
+      --bg:#17151a;
+      --card:#211e24;
+      --muted-bg:#2a262c;
+      --good:#3ddc97;
+      --warn:#ff8177;
+      --warn-bg:#3a1f1d;
+      --warn-border:#5c2e2a;
+      --field-bg:#28242a;
+      --field-bg-focus:#2f2a33;
+      --result-border:#4a2038;
+      --dash-border:#4a2038;
+    }
+  }
+  :root[data-theme="dark"]{
+    --pink:#ff5ba3;
+    --pink-soft:#3a1830;
+    --blue-soft:#182636;
+    --yellow-soft:#332b14;
+    --yellow-ink:#e8c766;
+    --ink:#f1edf1;
+    --sub:#b3a9b2;
+    --line:#3a333b;
+    --bg:#17151a;
+    --card:#211e24;
+    --muted-bg:#2a262c;
+    --good:#3ddc97;
+    --warn:#ff8177;
+    --warn-bg:#3a1f1d;
+    --warn-border:#5c2e2a;
+    --field-bg:#28242a;
+    --field-bg-focus:#2f2a33;
+    --result-border:#4a2038;
+    --dash-border:#4a2038;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:20px 16px 60px;
+  }
+  header{
+    text-align:center;
+    padding:18px 12px 22px;
+  }
+  header .badge{
+    display:inline-block;
+    background:var(--pink-strong);
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:21px;
+    margin:0;
+    font-weight:800;
+  }
+  header p{
+    margin:6px 0 0;
+    color:var(--sub);
+    font-size:13px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.03);
+  }
+  .card h2{
+    font-size:15px;
+    margin:0 0 14px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h2 .num{
+    background:var(--pink-soft);
+    color:var(--pink);
+    width:22px;height:22px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:800;
+  }
+  label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:var(--ink);
+  }
+  .field{margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  .hint{
+    font-size:12px;
+    color:var(--sub);
+    margin-top:5px;
+  }
+  input[type="number"]{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-size:15px;
+    background:var(--field-bg);
+    color:var(--ink);
+  }
+  input[type="number"]:focus{
+    outline:none;
+    border-color:var(--pink);
+    background:var(--field-bg-focus);
+  }
+  .inline-input{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .inline-input span{font-size:14px;color:var(--sub);white-space:nowrap;}
+  .checkbox-row{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    padding:10px 12px;
+    background:var(--blue-soft);
+    border-radius:10px;
+    font-size:13px;
+  }
+  .checkbox-row input{margin-top:2px;}
+  .checkbox-row .txt strong{display:block;font-size:13px;}
+  .checkbox-row .txt span{color:var(--sub);font-size:12px;}
+  .sub-panel{
+    margin-top:10px;
+    padding-left:2px;
+    display:none;
+  }
+  .sub-panel.show{display:block;}
+  .option-group{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .option{
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:10px;
+    cursor:pointer;
+    font-size:13px;
+    text-align:center;
+    transition:.15s;
+  }
+  .option input{display:none;}
+  .option .opt-title{font-weight:700;margin-bottom:2px;}
+  .option .opt-value{color:var(--pink);font-weight:800;font-size:14px;font-variant-numeric:tabular-nums;}
+  .option.selected{
+    border-color:var(--pink);
+    background:var(--pink-soft);
+  }
+  .option:has(input:focus-visible){
+    outline:2px solid var(--pink);
+    outline-offset:2px;
+  }
+  select{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-size:14px;
+    background:var(--field-bg);
+    color:var(--ink);
+  }
+  select:focus{
+    outline:none;
+    border-color:var(--pink);
+    background:var(--field-bg-focus);
+  }
+  .no-target{
+    font-size:13px;
+    color:var(--sub);
+    background:var(--muted-bg);
+    border-radius:10px;
+    padding:12px;
+    text-align:center;
+  }
+  .result-card{
+    background:linear-gradient(135deg,var(--card),var(--pink-soft));
+    border:1px solid var(--result-border);
+  }
+  .result-total{
+    text-align:center;
+    padding:10px 0 18px;
+  }
+  .result-total .label{
+    font-size:13px;
+    color:var(--sub);
+    margin-bottom:4px;
+  }
+  .result-total .value{
+    font-size:34px;
+    font-weight:900;
+    color:var(--pink);
+    font-variant-numeric:tabular-nums;
+  }
+  .breakdown{
+    border-top:1px dashed var(--dash-border);
+    padding-top:12px;
+  }
+  .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 0;
+    font-size:14px;
+  }
+  .row .r-label{color:var(--ink);font-weight:600;}
+  .row .r-label small{display:block;font-weight:400;color:var(--sub);font-size:12px;margin-top:2px;}
+  .row .r-value{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:6px;
+    background:var(--yellow-soft);
+    color:var(--yellow-ink);
+    margin-left:6px;
+  }
+  .note-box{
+    background:var(--card);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:12px;
+    color:var(--sub);
+    margin-top:14px;
+  }
+  .warn-box{
+    background:var(--warn-bg);
+    border:1px solid var(--warn-border);
+    color:var(--warn);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:12.5px;
+    margin-top:10px;
+    font-weight:600;
+  }
+  details{
+    margin-top:14px;
+    font-size:12.5px;
+    color:var(--sub);
+  }
+  details summary{
+    cursor:pointer;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  details ul{margin:6px 0 0;padding-left:18px;}
+  details li{margin-bottom:4px;}
+  footer{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--sub);
+    opacity:.75;
+    margin-top:24px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="badge">8월 3차 · 15~21일 (4영업일)</span>
+    <h1>경기지역단 매출 시상금 계산기</h1>
+    <p>이번 주 인보험 실적을 입력하면 예상 시상금을 확인할 수 있어요</p>
+  </header>
+
+  <!-- 입력: 실적 -->
+  <div class="card">
+    <h2><span class="num">1</span>이번 주 인보험 실적 입력</h2>
+    <div class="field">
+      <label for="sales">인보험 매출 실적 (만원)</label>
+      <input type="number" id="sales" min="0" placeholder="예: 45" inputmode="decimal">
+      <div class="hint">① 기본 시상 · ② 휴가철 참여 시상 · ③ 리딩-플래너 시상 기준 실적입니다.</div>
+    </div>
+    <div class="field">
+      <label for="haicap">이번 주 하이캡배수</label>
+      <input type="number" id="haicap" min="0" placeholder="예: 22" inputmode="decimal">
+      <div class="hint">하이캡배수 20 이상이면 우대 시상율이 적용돼요. (운전자·바이크·펫·행복가득생활·퍼펙트케어 보종은 집계 제외)</div>
+    </div>
+
+    <div class="field">
+      <div class="checkbox-row">
+        <input type="checkbox" id="newAgent">
+        <div class="txt">
+          <strong>1~4차월 신입 설계사이거나, 이번 주 인보험 100만원 이상 달성</strong>
+          <span>누계 하이캡배수 15 이상이면 기본 시상 구간 시상율이 100%로 우대돼요.</span>
+        </div>
+      </div>
+      <div class="sub-panel" id="cumPanel">
+        <div class="field" style="margin-top:10px;">
+          <label for="cumHaicap">누계 하이캡배수</label>
+          <input type="number" id="cumHaicap" min="0" placeholder="예: 16">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 결과 -->
+  <div class="card result-card">
+    <h2><span class="num">★</span>예상 시상금</h2>
+    <div class="result-total">
+      <div class="label">이번 주 예상 시상금 합계 (물품 상당액 포함)</div>
+      <div class="value" id="totalValue">0원</div>
+    </div>
+    <div class="breakdown">
+      <div class="row">
+        <div class="r-label">① 기본 시상<small id="tier1Desc">해당 구간 없음</small></div>
+        <div class="r-value" id="tier1Value">0원</div>
+      </div>
+      <div class="row">
+        <div class="r-label">② 휴가철 인보험 참여 시상<small id="tier2Desc">해당 구간 없음</small></div>
+        <div class="r-value" id="tier2Value">0원</div>
+      </div>
+      <div class="row">
+        <div class="r-label">③ 리딩-플래너 시상<small id="tier3Desc">순위에 따라 별도 지급 (아래에서 선택)</small></div>
+        <div class="r-value" id="tier3Value">-</div>
+      </div>
+    </div>
+    <div id="capWarn"></div>
+    <div class="note-box">
+      ※ ②는 상품/주유권 중 택1(현금이 아닌 물품·상품권 상당액), ③ 금·은·동메달은 순금 중량 시상으로 금액 합계에는 포함되지 않았습니다.
+    </div>
+  </div>
+
+  <!-- 부문 참여시상 선택 -->
+  <div class="card">
+    <h2><span class="num">2</span>휴가철 인보험 참여 시상 선택</h2>
+    <div id="tier2Options"></div>
+  </div>
+
+  <!-- 리딩플래너 -->
+  <div class="card">
+    <h2><span class="num">3</span>리딩-플래너 시상 (인보험 50만↑, 지역단 순위)</h2>
+    <div id="tier3Block">
+      <div class="no-target">인보험 50만원 이상 달성 시 순위를 선택할 수 있어요.</div>
+    </div>
+  </div>
+
+  <details>
+    <summary>주요 관리사항 (참고)</summary>
+    <ul>
+      <li>1~4차월 및 인100만↑ 달성자, 누계 하이캡배수 15 이상 시 기본 시상율 100% 우대</li>
+      <li>물품 포함 총 지급율은 매출 대비 160% 이내로 적용</li>
+      <li>하이캡배수 집계 제외 보종: 운전자, 바이크, 펫, 행복가득생활, 퍼펙트 케어</li>
+      <li>휴가철 인보험 참여 시상(②)은 관리사항 2~7 미적용, 주유권 브랜드는 구매처 사정에 따라 변동될 수 있음</li>
+      <li>정확한 지급 기준은 시상 지급 관련 차등 기준(별첨) 시트 및 관리사항 시트를 확인하세요</li>
+    </ul>
+  </details>
+
+  <footer>본 계산기는 8월 3차 경기지역단 매출 시상안 이미지를 기준으로 제작한 참고용 도구이며, 실제 지급액은 회사 정산 기준을 따릅니다.</footer>
+</div>
+
+<script>
+const fmt = n => Math.round(n).toLocaleString('ko-KR') + '원';
+const man = n => n * 10000;
+
+// 기본 시상 구간 (내림차순, 인보험 만원 기준)
+const baseTiers = [
+  { min:100, type:'percent', base:0.6, premium:0.8 },
+  { min:70,  type:'fixed',   base:42,  premium:56 },
+  { min:50,  type:'fixed',   base:30,  premium:40 },
+  { min:40,  type:'fixed',   base:24,  premium:32 },
+  { min:30,  type:'fixed',   base:18,  premium:24 },
+  { min:20,  type:'fixed',   base:12,  premium:16 },
+  { min:10,  type:'fixed',   base:6,   premium:8 },
+];
+
+// 휴가철 인보험 참여 시상 구간
+const participationTiers = [
+  { min:30, item:'테팔 무선청소기', itemValue:15, voucherLabel:'SK주유권 12만원', voucherValue:12 },
+  { min:20, item:'필립스 에어프라이어', itemValue:10, voucherLabel:'SK주유권 8만원', voucherValue:8 },
+  { min:10, item:'정관장 홍삼 활기력', itemValue:5, voucherLabel:'SK주유권 4만원', voucherValue:4 },
+];
+
+const rankOptions = [
+  { value:'none', label:'선택 안 함 / 순위 미확정', cash:0, gold:0 },
+  { value:'gold', label:'금메달 (순금 1g)', cash:0, gold:1 },
+  { value:'silver', label:'은메달 (순금 0.5g)', cash:0, gold:0.5 },
+  { value:'bronze', label:'동메달 (순금 0.3g)', cash:0, gold:0.3 },
+  { value:'4-5', label:'4~5위 (8만원)', cash:8, gold:0 },
+  { value:'6-10', label:'6~10위 (5만원)', cash:5, gold:0 },
+];
+
+let selectedParticipation = 'voucher'; // 'item' or 'voucher'
+let selectedRank = 'none';
+
+const salesEl = document.getElementById('sales');
+const haicapEl = document.getElementById('haicap');
+const newAgentEl = document.getElementById('newAgent');
+const cumPanel = document.getElementById('cumPanel');
+const cumHaicapEl = document.getElementById('cumHaicap');
+
+newAgentEl.addEventListener('change', () => {
+  cumPanel.classList.toggle('show', newAgentEl.checked);
+  render();
+});
+[salesEl, haicapEl, cumHaicapEl].forEach(el => el.addEventListener('input', render));
+
+function getSalesMan(){
+  const v = parseFloat(salesEl.value);
+  return isNaN(v) || v < 0 ? 0 : v;
+}
+
+function findBaseTier(salesMan){
+  return baseTiers.find(t => salesMan >= t.min) || null;
+}
+
+function findParticipationTier(salesMan){
+  return participationTiers.find(t => salesMan >= t.min) || null;
+}
+
+function computeBaseAward(salesMan){
+  const tier = findBaseTier(salesMan);
+  if(!tier) return { amountMan:0, desc:'10만원 이상부터 시상 대상입니다.', tier:null };
+
+  const haicap = parseFloat(haicapEl.value) || 0;
+  const isPremium = haicap >= 20;
+  const cumHaicap = parseFloat(cumHaicapEl.value) || 0;
+  const specialFull = newAgentEl.checked && cumHaicap >= 15 && tier.type === 'percent';
+
+  let amountMan, rateDesc;
+  if(tier.type === 'percent'){
+    let rate = isPremium ? tier.premium : tier.base;
+    if(specialFull) rate = 1.0;
+    amountMan = salesMan * rate;
+    rateDesc = `${tier.min}만↑ 구간 · 시상율 ${Math.round(rate*100)}%${specialFull ? ' (100% 우대 적용)' : (isPremium ? ' (하이캡배수 우대)' : '')}`;
+  } else {
+    amountMan = isPremium ? tier.premium : tier.base;
+    rateDesc = `${tier.min}만↑ 구간 · 정액 ${amountMan}만원${isPremium ? ' (하이캡배수 우대)' : ''}`;
+  }
+  return { amountMan, desc: rateDesc, tier };
+}
+
+function renderParticipationOptions(){
+  const salesMan = getSalesMan();
+  const tier = findParticipationTier(salesMan);
+  const box = document.getElementById('tier2Options');
+  if(!tier){
+    box.innerHTML = '<div class="no-target">인보험 10만원 이상 참여 시 상품 또는 주유권 중 택1로 시상 대상이 돼요.</div>';
+    return;
+  }
+  box.innerHTML = `
+    <div class="hint" style="margin-bottom:10px;">인보험 ${tier.min}만↑ 참여 구간 · 아래 중 하나를 선택하세요</div>
+    <div class="option-group">
+      <label class="option ${selectedParticipation==='item' ? 'selected':''}" data-choice="item">
+        <input type="radio" name="p2" value="item">
+        <div class="opt-title">${tier.item}</div>
+        <div class="opt-value">${tier.itemValue}만원 상당</div>
+      </label>
+      <label class="option ${selectedParticipation==='voucher' ? 'selected':''}" data-choice="voucher">
+        <input type="radio" name="p2" value="voucher">
+        <div class="opt-title">${tier.voucherLabel.split(' ')[0]}</div>
+        <div class="opt-value">${tier.voucherValue}만원</div>
+      </label>
+    </div>
+  `;
+  box.querySelectorAll('.option').forEach(el => {
+    el.addEventListener('click', () => {
+      selectedParticipation = el.dataset.choice;
+      render();
+    });
+  });
+}
+
+function renderRankBlock(){
+  const salesMan = getSalesMan();
+  const block = document.getElementById('tier3Block');
+  if(salesMan < 50){
+    block.innerHTML = '<div class="no-target">인보험 50만원 이상 달성 시 순위를 선택할 수 있어요.</div>';
+    selectedRank = 'none';
+    return;
+  }
+  block.innerHTML = `
+    <div class="field">
+      <label for="rankSelect">지역단 내 내 순위 (알고 있다면 선택)</label>
+      <select id="rankSelect"></select>
+      <div class="hint">순위는 지역단 전체 실적으로 결정되며, 개인 입력값만으로는 알 수 없어 직접 선택해야 해요. 금·은·동메달은 순금 중량 시상으로 합계 금액에는 포함되지 않아요.</div>
+    </div>
+  `;
+  const sel = document.getElementById('rankSelect');
+  rankOptions.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r.value;
+    opt.textContent = r.label;
+    if(r.value === selectedRank) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', () => {
+    selectedRank = sel.value;
+    render();
+  });
+}
+
+function render(){
+  const salesMan = getSalesMan();
+
+  renderParticipationOptions();
+  renderRankBlock();
+
+  // 1) 기본 시상
+  const base = computeBaseAward(salesMan);
+  document.getElementById('tier1Desc').textContent = base.desc;
+  document.getElementById('tier1Value').textContent = fmt(man(base.amountMan));
+
+  // 2) 참여 시상
+  const pTier = findParticipationTier(salesMan);
+  let pAmountMan = 0, pDesc = '해당 구간 없음';
+  if(pTier){
+    pAmountMan = selectedParticipation === 'item' ? pTier.itemValue : pTier.voucherValue;
+    pDesc = `${pTier.min}만↑ · ${selectedParticipation === 'item' ? pTier.item : pTier.voucherLabel}`;
+  }
+  document.getElementById('tier2Desc').textContent = pDesc;
+  document.getElementById('tier2Value').textContent = fmt(man(pAmountMan));
+
+  // 3) 리딩플래너
+  const rank = rankOptions.find(r => r.value === selectedRank);
+  let rankAmountMan = 0, rankText = '-';
+  if(salesMan >= 50 && rank){
+    if(rank.gold > 0){
+      rankText = `순금 ${rank.gold}g (별도 지급)`;
+    } else if(rank.cash > 0){
+      rankAmountMan = rank.cash;
+      rankText = fmt(man(rank.cash));
+    } else {
+      rankText = '-';
+    }
+  }
+  document.getElementById('tier3Value').textContent = rankText;
+
+  // 총합 (현금성만 합산: 기본 + 참여상당액 + 리딩플래너 현금)
+  const totalMan = base.amountMan + pAmountMan + rankAmountMan;
+  document.getElementById('totalValue').textContent = fmt(man(totalMan));
+
+  // 160% 캡 경고
+  const capBox = document.getElementById('capWarn');
+  if(salesMan > 0 && totalMan / salesMan > 1.6){
+    capBox.innerHTML = `<div class="warn-box">⚠ 물품 포함 총 지급율이 매출 대비 ${Math.round(totalMan/salesMan*100)}%로, 관리 기준(160% 이내)을 초과할 수 있어요. 실제 지급 시 조정될 수 있습니다.</div>`;
+  } else {
+    capBox.innerHTML = '';
+  }
+}
+
+render();
+</script>
+</body>
+</html>

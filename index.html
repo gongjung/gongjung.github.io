@@ -389,7 +389,7 @@
     </div>
     <div id="capWarn"></div>
     <div class="note-box">
-      ※ ②는 상품/주유권 중 택1(현금이 아닌 물품·상품권 상당액), ③ 금·은·동메달은 순금 중량 시상으로 금액 합계에는 포함되지 않았습니다.
+      ※ ②는 상품 중 택1(현금이 아닌 물품 상당액), ③ 금·은·동메달은 순금 중량 시상으로 금액 합계에는 포함되지 않았습니다.
     </div>
   </div>
 
@@ -438,9 +438,9 @@ const baseTiers = [
 
 // 휴가철 인보험 참여 시상 구간
 const participationTiers = [
-  { min:30, item:'테팔 무선청소기', itemValue:15, voucherLabel:'SK주유권 12만원', voucherValue:12 },
-  { min:20, item:'필립스 에어프라이어', itemValue:10, voucherLabel:'SK주유권 8만원', voucherValue:8 },
-  { min:10, item:'정관장 홍삼 활기력', itemValue:5, voucherLabel:'SK주유권 4만원', voucherValue:4 },
+  { min:30, item:'테팔 무선청소기', itemValue:15, voucherLabel:'CJ 스팸 84호 3개', voucherValue:15 },
+  { min:20, item:'필립스 에어프라이어', itemValue:10, voucherLabel:'CJ 스팸 84호 2개', voucherValue:10 },
+  { min:10, item:'정관장 홍삼 활기력', itemValue:5, voucherLabel:'CJ 스팸 84호 1개', voucherValue:5 },
 ];
 
 const rankOptions = [
@@ -507,7 +507,7 @@ function renderParticipationOptions(){
   const tier = findParticipationTier(salesMan);
   const box = document.getElementById('tier2Options');
   if(!tier){
-    box.innerHTML = '<div class="no-target">인보험 10만원 이상 참여 시 상품 또는 주유권 중 택1로 시상 대상이 돼요.</div>';
+    box.innerHTML = '<div class="no-target">인보험 10만원 이상 참여 시 상품 중 택1로 시상 대상이 돼요.</div>';
     return;
   }
   box.innerHTML = `
@@ -520,8 +520,8 @@ function renderParticipationOptions(){
       </label>
       <label class="option ${selectedParticipation==='voucher' ? 'selected':''}" data-choice="voucher">
         <input type="radio" name="p2" value="voucher">
-        <div class="opt-title">${tier.voucherLabel.split(' ')[0]}</div>
-        <div class="opt-value">${tier.voucherValue}만원</div>
+        <div class="opt-title">${tier.voucherLabel}</div>
+        <div class="opt-value">${tier.voucherValue}만원 상당</div>
       </label>
     </div>
   `;

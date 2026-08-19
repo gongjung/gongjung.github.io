@@ -17,6 +17,7 @@
     --pink-strong:#c2006a;
     --pink-soft:#fde7f2;
     --blue-soft:#eaf2fb;
+    --blue-ink:#1a5fa8;
     --yellow-soft:#fff6cf;
     --yellow-ink:#8a6d00;
     --ink:#22262b;
@@ -26,6 +27,7 @@
     --card:#ffffff;
     --muted-bg:#f2eef2;
     --good:#0f9d58;
+    --good-soft:#e3f6ec;
     --warn:#d93025;
     --warn-bg:#fdecea;
     --warn-border:#f6c6c1;
@@ -40,6 +42,7 @@
       --pink:#ff5ba3;
       --pink-soft:#3a1830;
       --blue-soft:#182636;
+      --blue-ink:#7fb2e8;
       --yellow-soft:#332b14;
       --yellow-ink:#e8c766;
       --ink:#f1edf1;
@@ -49,6 +52,7 @@
       --card:#211e24;
       --muted-bg:#2a262c;
       --good:#3ddc97;
+      --good-soft:#173328;
       --warn:#ff8177;
       --warn-bg:#3a1f1d;
       --warn-border:#5c2e2a;
@@ -62,6 +66,7 @@
     --pink:#ff5ba3;
     --pink-soft:#3a1830;
     --blue-soft:#182636;
+    --blue-ink:#7fb2e8;
     --yellow-soft:#332b14;
     --yellow-ink:#e8c766;
     --ink:#f1edf1;
@@ -71,6 +76,7 @@
     --card:#211e24;
     --muted-bg:#2a262c;
     --good:#3ddc97;
+    --good-soft:#173328;
     --warn:#ff8177;
     --warn-bg:#3a1f1d;
     --warn-border:#5c2e2a;
@@ -246,20 +252,32 @@
     background:linear-gradient(135deg,var(--card),var(--pink-soft));
     border:1px solid var(--result-border);
   }
+  .result-total-group{
+    display:flex;
+    gap:10px;
+    padding:10px 0 16px;
+  }
   .result-total{
+    flex:1;
     text-align:center;
-    padding:10px 0 18px;
+    background:var(--card);
+    border-radius:12px;
+    padding:12px 8px;
   }
   .result-total .label{
-    font-size:13px;
+    font-size:12px;
     color:var(--sub);
     margin-bottom:4px;
   }
   .result-total .value{
-    font-size:34px;
+    font-size:26px;
     font-weight:900;
     color:var(--pink);
     font-variant-numeric:tabular-nums;
+  }
+  .result-total.result-total-item .value{
+    color:var(--blue-ink);
+    font-size:22px;
   }
   .breakdown{
     border-top:1px dashed var(--dash-border);
@@ -285,6 +303,8 @@
     color:var(--yellow-ink);
     margin-left:6px;
   }
+  .tag-cash{background:var(--good-soft);color:var(--good);}
+  .tag-item{background:var(--blue-soft);color:var(--blue-ink);}
   .note-box{
     background:var(--card);
     border:1px dashed var(--line);
@@ -369,27 +389,33 @@
   <!-- 결과 -->
   <div class="card result-card">
     <h2><span class="num">★</span>예상 시상금</h2>
-    <div class="result-total">
-      <div class="label">이번 주 예상 시상금 합계 (물품 상당액 포함)</div>
-      <div class="value" id="totalValue">0원</div>
+    <div class="result-total-group">
+      <div class="result-total">
+        <div class="label">현금 시상금 합계</div>
+        <div class="value" id="cashTotalValue">0원</div>
+      </div>
+      <div class="result-total result-total-item">
+        <div class="label">물품 시상 상당액 합계</div>
+        <div class="value" id="itemTotalValue">0원</div>
+      </div>
     </div>
     <div class="breakdown">
       <div class="row">
-        <div class="r-label">① 기본 시상<small id="tier1Desc">해당 구간 없음</small></div>
+        <div class="r-label">① 기본 시상 <span class="tag tag-cash">현금</span><small id="tier1Desc">해당 구간 없음</small></div>
         <div class="r-value" id="tier1Value">0원</div>
       </div>
       <div class="row">
-        <div class="r-label">② 휴가철 인보험 참여 시상<small id="tier2Desc">해당 구간 없음</small></div>
+        <div class="r-label">② 휴가철 인보험 참여 시상 <span class="tag tag-item">물품</span><small id="tier2Desc">해당 구간 없음</small></div>
         <div class="r-value" id="tier2Value">0원</div>
       </div>
       <div class="row">
-        <div class="r-label">③ 리딩-플래너 시상<small id="tier3Desc">순위에 따라 별도 지급 (아래에서 선택)</small></div>
+        <div class="r-label">③ 리딩-플래너 시상 <span class="tag" id="tier3Badge"></span><small id="tier3Desc">순위에 따라 별도 지급 (아래에서 선택)</small></div>
         <div class="r-value" id="tier3Value">-</div>
       </div>
     </div>
     <div id="capWarn"></div>
     <div class="note-box">
-      ※ ②는 상품 중 택1(현금이 아닌 물품 상당액), ③ 금·은·동메달은 순금 중량 시상으로 금액 합계에는 포함되지 않았습니다.
+      ※ "현금 시상금"은 계좌로 지급되는 금액이고, "물품 시상"은 상품(②) 또는 순금(③ 금·은·동메달)으로 지급돼요. 금·은·동메달은 중량 기준 지급이라 상당액 합계에는 포함하지 않았습니다.
     </div>
   </div>
 
@@ -588,26 +614,38 @@ function render(){
   // 3) 리딩플래너
   const rank = rankOptions.find(r => r.value === selectedRank);
   let rankAmountMan = 0, rankText = '-';
+  const tier3Badge = document.getElementById('tier3Badge');
+  tier3Badge.textContent = '';
+  tier3Badge.className = 'tag';
   if(salesMan >= 50 && rank){
     if(rank.gold > 0){
       rankText = `순금 ${rank.gold}g (별도 지급)`;
+      tier3Badge.textContent = '물품';
+      tier3Badge.className = 'tag tag-item';
     } else if(rank.cash > 0){
       rankAmountMan = rank.cash;
       rankText = fmt(man(rank.cash));
+      tier3Badge.textContent = '현금';
+      tier3Badge.className = 'tag tag-cash';
     } else {
       rankText = '-';
     }
   }
   document.getElementById('tier3Value').textContent = rankText;
 
-  // 총합 (현금성만 합산: 기본 + 참여상당액 + 리딩플래너 현금)
-  const totalMan = base.amountMan + pAmountMan + rankAmountMan;
-  document.getElementById('totalValue').textContent = fmt(man(totalMan));
+  // 현금 시상금 합계: ① 기본 시상 + ③ 리딩플래너 현금(4~5위/6~10위)
+  const cashTotalMan = base.amountMan + rankAmountMan;
+  document.getElementById('cashTotalValue').textContent = fmt(man(cashTotalMan));
 
-  // 160% 캡 경고
+  // 물품 시상 상당액 합계: ② 참여 시상 상당액 (③ 금·은·동메달은 중량 지급이라 상당액 미포함)
+  const itemTotalMan = pAmountMan;
+  document.getElementById('itemTotalValue').textContent = fmt(man(itemTotalMan));
+
+  // 160% 캡 경고 (물품 상당액 포함 총 지급율 기준)
+  const capTotalMan = cashTotalMan + itemTotalMan;
   const capBox = document.getElementById('capWarn');
-  if(salesMan > 0 && totalMan / salesMan > 1.6){
-    capBox.innerHTML = `<div class="warn-box">⚠ 물품 포함 총 지급율이 매출 대비 ${Math.round(totalMan/salesMan*100)}%로, 관리 기준(160% 이내)을 초과할 수 있어요. 실제 지급 시 조정될 수 있습니다.</div>`;
+  if(salesMan > 0 && capTotalMan / salesMan > 1.6){
+    capBox.innerHTML = `<div class="warn-box">⚠ 물품 포함 총 지급율이 매출 대비 ${Math.round(capTotalMan/salesMan*100)}%로, 관리 기준(160% 이내)을 초과할 수 있어요. 실제 지급 시 조정될 수 있습니다.</div>`;
   } else {
     capBox.innerHTML = '';
   }

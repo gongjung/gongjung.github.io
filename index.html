@@ -487,14 +487,16 @@ function computeBaseAward(salesMan){
   const haicap = parseFloat(haicapEl.value) || 0;
   const isPremium = haicap >= 20;
   const cumHaicap = parseFloat(cumHaicapEl.value) || 0;
-  const specialFull = newAgentEl.checked && cumHaicap >= 15 && tier.type === 'percent';
+  const specialFull = newAgentEl.checked && cumHaicap >= 15;
 
   let amountMan, rateDesc;
-  if(tier.type === 'percent'){
+  if(specialFull){
+    amountMan = salesMan * 1.0;
+    rateDesc = `${tier.min}만↑ 구간 · 시상율 100% (1~4차월 신인/100만↑ 우대 적용)`;
+  } else if(tier.type === 'percent'){
     let rate = isPremium ? tier.premium : tier.base;
-    if(specialFull) rate = 1.0;
     amountMan = salesMan * rate;
-    rateDesc = `${tier.min}만↑ 구간 · 시상율 ${Math.round(rate*100)}%${specialFull ? ' (100% 우대 적용)' : (isPremium ? ' (하이캡배수 우대)' : '')}`;
+    rateDesc = `${tier.min}만↑ 구간 · 시상율 ${Math.round(rate*100)}%${isPremium ? ' (하이캡배수 우대)' : ''}`;
   } else {
     amountMan = isPremium ? tier.premium : tier.base;
     rateDesc = `${tier.min}만↑ 구간 · 정액 ${amountMan}만원${isPremium ? ' (하이캡배수 우대)' : ''}`;

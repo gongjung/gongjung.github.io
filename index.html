@@ -305,6 +305,7 @@
   }
   .tag-cash{background:var(--good-soft);color:var(--good);}
   .tag-item{background:var(--blue-soft);color:var(--blue-ink);}
+  .tag-muted{background:var(--muted-bg);color:var(--sub);}
   .note-box{
     background:var(--card);
     border:1px dashed var(--line);
@@ -436,10 +437,23 @@
   <details>
     <summary>주요 관리사항 (참고)</summary>
     <ul>
-      <li>1~4차월 및 인100만↑ 달성자, 누계 하이캡배수 15 이상 시 기본 시상율 100% 우대</li>
-      <li>물품 포함 총 지급율은 매출 대비 160% 이내로 적용</li>
-      <li>하이캡배수 집계 제외 보종: 운전자, 바이크, 펫, 행복가득생활, 퍼펙트 케어</li>
-      <li>휴가철 인보험 참여 시상(②)은 관리사항 2~7 미적용, 주유권 브랜드는 구매처 사정에 따라 변동될 수 있음</li>
+      <li>
+        <strong>① 기본 시상</strong> <span class="tag tag-muted">관리사항 1~7 적용</span>
+        <ul>
+          <li>1~4차월 및 인100만↑ 달성자, 누계 하이캡배수 15 이상 시 기본 시상율 100% 우대</li>
+          <li>물품 포함 총 지급율은 매출 대비 160% 이내로 적용</li>
+          <li>하이캡배수 집계 제외 보종: 운전자, 바이크, 펫, 행복가득생활, 퍼펙트 케어</li>
+        </ul>
+      </li>
+      <li>
+        <strong>② 휴가철 인보험 참여 시상</strong> <span class="tag tag-muted">관리사항 2~7 미적용</span>
+        <ul>
+          <li>주유권 브랜드는 구매처 사정에 따라 변동될 수 있음</li>
+        </ul>
+      </li>
+      <li>
+        <strong>③ 리딩-플래너 시상</strong> <span class="tag tag-muted">관리사항 1~7 적용</span>
+      </li>
       <li>정확한 지급 기준은 시상 지급 관련 차등 기준(별첨) 시트 및 관리사항 시트를 확인하세요</li>
     </ul>
   </details>
@@ -616,17 +630,19 @@ function render(){
   let rankAmountMan = 0, rankText = '-';
   const tier3Badge = document.getElementById('tier3Badge');
   tier3Badge.textContent = '';
-  tier3Badge.className = 'tag';
+  tier3Badge.style.display = 'none';
   if(salesMan >= 50 && rank){
     if(rank.gold > 0){
       rankText = `순금 ${rank.gold}g (별도 지급)`;
       tier3Badge.textContent = '물품';
       tier3Badge.className = 'tag tag-item';
+      tier3Badge.style.display = '';
     } else if(rank.cash > 0){
       rankAmountMan = rank.cash;
       rankText = fmt(man(rank.cash));
       tier3Badge.textContent = '현금';
       tier3Badge.className = 'tag tag-cash';
+      tier3Badge.style.display = '';
     } else {
       rankText = '-';
     }

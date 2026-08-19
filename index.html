@@ -360,9 +360,14 @@
   <div class="card">
     <h2><span class="num">1</span>이번 주 인보험 실적 입력</h2>
     <div class="field">
-      <label for="sales">인보험 매출 실적 (만원)</label>
-      <input type="number" id="sales" min="0" placeholder="예: 45" inputmode="decimal">
-      <div class="hint">① 기본 시상 · ② 휴가철 참여 시상 · ③ 리딩-플래너 시상 기준 실적입니다.</div>
+      <label for="salesA">관리사항 1~7 적용 실적 (만원)</label>
+      <input type="number" id="salesA" min="0" placeholder="예: 45" inputmode="decimal">
+      <div class="hint">① 기본 시상 · ③ 리딩-플래너 시상 기준 실적이에요. 집중관리계약·본인계약·실손 등은 제외한 실적을 입력하세요.</div>
+    </div>
+    <div class="field">
+      <label for="salesB">관리사항 2~7 미적용 실적 (만원)</label>
+      <input type="number" id="salesB" min="0" placeholder="예: 60" inputmode="decimal">
+      <div class="hint">② 휴가철 인보험 참여 시상 기준 실적이에요. 집중관리계약·본인계약·실손 등을 포함한 전체 실적을 입력하세요.</div>
     </div>
     <div class="field">
       <label for="haicap">이번 주 하이캡배수</label>
@@ -495,7 +500,8 @@ const rankOptions = [
 let selectedParticipation = 'voucher'; // 'item' or 'voucher'
 let selectedRank = 'none';
 
-const salesEl = document.getElementById('sales');
+const salesAEl = document.getElementById('salesA');
+const salesBEl = document.getElementById('salesB');
 const haicapEl = document.getElementById('haicap');
 const newAgentEl = document.getElementById('newAgent');
 const cumPanel = document.getElementById('cumPanel');
@@ -505,12 +511,14 @@ newAgentEl.addEventListener('change', () => {
   cumPanel.classList.toggle('show', newAgentEl.checked);
   render();
 });
-[salesEl, haicapEl, cumHaicapEl].forEach(el => el.addEventListener('input', render));
+[salesAEl, salesBEl, haicapEl, cumHaicapEl].forEach(el => el.addEventListener('input', render));
 
-function getSalesMan(){
-  const v = parseFloat(salesEl.value);
+function readMan(el){
+  const v = parseFloat(el.value);
   return isNaN(v) || v < 0 ? 0 : v;
 }
+function getSalesA(){ return readMan(salesAEl); } // 관리사항 1~7 적용 실적 (① ③ 기준)
+function getSalesB(){ return readMan(salesBEl); } // 관리사항 2~7 미적용 실적 (② 기준)
 
 function findBaseTier(salesMan){
   return baseTiers.find(t => salesMan >= t.min) || null;
@@ -545,11 +553,11 @@ function computeBaseAward(salesMan){
 }
 
 function renderParticipationOptions(){
-  const salesMan = getSalesMan();
-  const tier = findParticipationTier(salesMan);
+  const salesB = getSalesB();
+  const tier = findParticipationTier(salesB);
   const box = document.getElementById('tier2Options');
   if(!tier){
-    box.innerHTML = '<div class="no-target">인보험 10만원 이상 참여 시 상품 중 택1로 시상 대상이 돼요.</div>';
+    box.innerHTML = '<div class="no-target">인보험(관리사항 2~7 미적용 실적) 10만원 이상 참여 시 상품 중 택1로 시상 대상이 돼요.</div>';
     return;
   }
   box.innerHTML = `
@@ -576,10 +584,10 @@ function renderParticipationOptions(){
 }
 
 function renderRankBlock(){
-  const salesMan = getSalesMan();
+  const salesA = getSalesA();
   const block = document.getElementById('tier3Block');
-  if(salesMan < 50){
-    block.innerHTML = '<div class="no-target">인보험 50만원 이상 달성 시 순위를 선택할 수 있어요.</div>';
+  if(salesA < 50){
+    block.innerHTML = '<div class="no-target">인보험(관리사항 1~7 적용 실적) 50만원 이상 달성 시 순위를 선택할 수 있어요.</div>';
     selectedRank = 'none';
     return;
   }
@@ -605,18 +613,19 @@ function renderRankBlock(){
 }
 
 function render(){
-  const salesMan = getSalesMan();
+  const salesA = getSalesA();
+  const salesB = getSalesB();
 
   renderParticipationOptions();
   renderRankBlock();
 
-  // 1) 기본 시상
-  const base = computeBaseAward(salesMan);
+  // 1) 기본 시상 (관리사항 1~7 적용 실적 기준)
+  const base = computeBaseAward(salesA);
   document.getElementById('tier1Desc').textContent = base.desc;
   document.getElementById('tier1Value').textContent = fmt(man(base.amountMan));
 
-  // 2) 참여 시상
-  const pTier = findParticipationTier(salesMan);
+  // 2) 참여 시상 (관리사항 2~7 미적용 실적 기준)
+  const pTier = findParticipationTier(salesB);
   let pAmountMan = 0, pDesc = '해당 구간 없음';
   if(pTier){
     pAmountMan = selectedParticipation === 'item' ? pTier.itemValue : pTier.voucherValue;
@@ -625,13 +634,13 @@ function render(){
   document.getElementById('tier2Desc').textContent = pDesc;
   document.getElementById('tier2Value').textContent = fmt(man(pAmountMan));
 
-  // 3) 리딩플래너
+  // 3) 리딩플래너 (관리사항 1~7 적용 실적 기준)
   const rank = rankOptions.find(r => r.value === selectedRank);
   let rankAmountMan = 0, rankText = '-';
   const tier3Badge = document.getElementById('tier3Badge');
   tier3Badge.textContent = '';
   tier3Badge.style.display = 'none';
-  if(salesMan >= 50 && rank){
+  if(salesA >= 50 && rank){
     if(rank.gold > 0){
       rankText = `순금 ${rank.gold}g (별도 지급)`;
       tier3Badge.textContent = '물품';
@@ -657,11 +666,11 @@ function render(){
   const itemTotalMan = pAmountMan;
   document.getElementById('itemTotalValue').textContent = fmt(man(itemTotalMan));
 
-  // 160% 캡 경고 (물품 상당액 포함 총 지급율 기준)
+  // 160% 캡 경고 (물품 상당액 포함, 관리사항 1~7 적용 실적 대비 총 지급율 기준)
   const capTotalMan = cashTotalMan + itemTotalMan;
   const capBox = document.getElementById('capWarn');
-  if(salesMan > 0 && capTotalMan / salesMan > 1.6){
-    capBox.innerHTML = `<div class="warn-box">⚠ 물품 포함 총 지급율이 매출 대비 ${Math.round(capTotalMan/salesMan*100)}%로, 관리 기준(160% 이내)을 초과할 수 있어요. 실제 지급 시 조정될 수 있습니다.</div>`;
+  if(salesA > 0 && capTotalMan / salesA > 1.6){
+    capBox.innerHTML = `<div class="warn-box">⚠ 물품 포함 총 지급율이 매출(관리사항 1~7 적용 실적) 대비 ${Math.round(capTotalMan/salesA*100)}%로, 관리 기준(160% 이내)을 초과할 수 있어요. 실제 지급 시 조정될 수 있습니다.</div>`;
   } else {
     capBox.innerHTML = '';
   }

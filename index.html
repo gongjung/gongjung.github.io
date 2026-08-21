@@ -296,6 +296,68 @@
     box-shadow:0 4px 14px rgba(234,116,4,0.32);
   }
   .primary-btn:active{transform:translateY(1px);}
+  .secondary-btn{
+    display:block;
+    width:100%;
+    border:1.5px solid var(--navy);
+    cursor:pointer;
+    background:var(--navy-soft);
+    color:var(--navy);
+    font-family:inherit;
+    font-size:14px;
+    font-weight:700;
+    padding:12px 16px;
+    border-radius:12px;
+    margin-bottom:16px;
+  }
+  .secondary-btn:active{transform:translateY(1px);}
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(10,10,14,0.72);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    position:relative;
+    max-width:96vw;
+    max-height:92vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .modal-box img{
+    display:block;
+    max-width:96vw;
+    max-height:92vh;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    border-radius:12px;
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  }
+  .modal-close{
+    position:absolute;
+    top:-14px;
+    right:-14px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:none;
+    background:var(--orange);
+    color:#fff;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.3);
+  }
   .ghost-btn{
     display:inline-flex;
     align-items:center;
@@ -420,6 +482,8 @@
       <img src="public/hdhs-cheer.png" alt="ㅎㄷㅎㅅ 캐릭터">
       <div class="txt">ㅎㄷㅎㅅ가 도와줄게요!<br><strong>기본정보만 입력하면 4주차 시상금을 바로 확인할 수 있어요.</strong></div>
     </div>
+
+    <button type="button" class="secondary-btn" id="showAwardBtn">📋 이번주 시상 확인하기</button>
 
     <div class="card">
       <h2><span class="num">1</span>기본정보 입력</h2>
@@ -570,6 +634,14 @@
 
 </div>
 
+<!-- 4차 시상 기준표 팝업 -->
+<div class="modal-overlay" id="awardModal">
+  <div class="modal-box">
+    <button type="button" class="modal-close" id="closeAwardBtn" aria-label="닫기">✕</button>
+    <img src="public/award-4cha.png" alt="8월 4차 경기지역단 매출 시상 기준표">
+  </div>
+</div>
+
 <script>
 const fmt = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const man = n => n * 10000;
@@ -634,6 +706,21 @@ backBtn.addEventListener('click', () => {
 });
 
 interviewJokerEl.addEventListener('change', render);
+
+// ---- 4차 시상 기준표 팝업 ----
+const awardModal = document.getElementById('awardModal');
+document.getElementById('showAwardBtn').addEventListener('click', () => {
+  awardModal.classList.add('open');
+});
+document.getElementById('closeAwardBtn').addEventListener('click', () => {
+  awardModal.classList.remove('open');
+});
+awardModal.addEventListener('click', (e) => {
+  if(e.target === awardModal) awardModal.classList.remove('open');
+});
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') awardModal.classList.remove('open');
+});
 
 function readMan(el){
   const v = parseFloat(el.value);

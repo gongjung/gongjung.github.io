@@ -430,7 +430,12 @@
       <div class="field">
         <label for="salesA">관리사항 1~7 적용 실적 (만원)</label>
         <input type="number" id="salesA" min="0" placeholder="예: 45" inputmode="decimal">
-        <div class="hint">이번 주(22~28일) 인보험 실적이에요. ①기본 시상 · ②하이스타 조커 시상 · ③리딩-플래너 시상 모두 이 실적을 기준으로 계산돼요.</div>
+        <div class="hint">이번 주(22~28일) 인보험 실적이에요. ①기본 시상 · ③리딩-플래너 시상은 이 실적을 기준으로 계산돼요.</div>
+      </div>
+      <div class="field">
+        <label for="salesMain">주력상품 실적 (만원)</label>
+        <input type="number" id="salesMain" min="0" placeholder="예: 12" inputmode="decimal">
+        <div class="hint">②하이스타 조커 시상 기준 실적이에요. 주력상품: 퍼펙트플러스, 간편보험, 인생의품격, 굿앤굿 1540, 굿앤굿 스타</div>
       </div>
       <div class="field">
         <label for="haicap">이번 주 하이캡배수</label>
@@ -581,7 +586,7 @@ const baseTiers = [
   { min:10,  type:'fixed',   base:5,   premium:7,  teamBonus:3 },
 ];
 
-// ② 하이스타 조커 시상 기준 (관리사항 1~7 적용 실적)
+// ② 하이스타 조커 시상 기준 (주력상품 실적: 퍼펙트플러스·간편보험·인생의품격·굿앤굿 1540·굿앤굿 스타)
 const jokerMinMan = 10;
 const jokerVoucherMan = 5; // [정관장] 5만원권
 
@@ -599,6 +604,7 @@ let selectedRank = 'none';
 // ---- Page 1 요소 ----
 const agentNameEl = document.getElementById('agentName');
 const salesAEl = document.getElementById('salesA');
+const salesMainEl = document.getElementById('salesMain');
 const haicapEl = document.getElementById('haicap');
 const newAgentEl = document.getElementById('newAgent');
 const cumPanel = document.getElementById('cumPanel');
@@ -634,6 +640,7 @@ function readMan(el){
   return isNaN(v) || v < 0 ? 0 : v;
 }
 function getSalesA(){ return readMan(salesAEl); }
+function getSalesMain(){ return readMan(salesMainEl); }
 
 function findBaseTier(salesMan){
   return baseTiers.find(t => salesMan >= t.min) || null;
@@ -666,13 +673,13 @@ function computeBaseAward(salesMan){
   return { amountMan, desc: rateDesc };
 }
 
-function renderJokerBox(salesA){
+function renderJokerBox(salesMain){
   const box = document.getElementById('jokerBox');
-  const salesOk = salesA >= jokerMinMan;
+  const salesOk = salesMain >= jokerMinMan;
   if(salesOk){
-    box.innerHTML = `<div class="hint">주력상품 ${jokerMinMan}만↑ 참여 · 하이스타 조커 인정 + [정관장] ${jokerVoucherMan}만원권 지급 대상이에요.</div>`;
+    box.innerHTML = `<div class="hint">주력상품 실적 ${jokerMinMan}만↑ 참여 · 하이스타 조커 인정 + [정관장] ${jokerVoucherMan}만원권 지급 대상이에요.</div>`;
   } else {
-    box.innerHTML = `<div class="no-target">인보험(관리사항 1~7 적용 실적) ${jokerMinMan}만원 이상 참여 시 하이스타 조커 인정 + 정관장 상품권이 지급돼요.</div>`;
+    box.innerHTML = `<div class="no-target">주력상품(퍼펙트플러스·간편보험·인생의품격·굿앤굿 1540·굿앤굿 스타) 실적 ${jokerMinMan}만원 이상 참여 시 하이스타 조커 인정 + 정관장 상품권이 지급돼요.</div>`;
   }
 }
 
@@ -707,11 +714,12 @@ function renderRankBlock(){
 
 function render(){
   const salesA = getSalesA();
+  const salesMain = getSalesMain();
   const name = agentNameEl.value.trim();
 
   document.getElementById('greeting').textContent = name ? `${name}님의 8월 4차 예상 시상금` : '경기지역단 매출 시상금 계산기';
 
-  renderJokerBox(salesA);
+  renderJokerBox(salesMain);
   renderRankBlock();
 
   // 1) 기본 시상
@@ -719,8 +727,8 @@ function render(){
   document.getElementById('tier1Desc').textContent = base.desc;
   document.getElementById('tier1Value').textContent = fmt(man(base.amountMan));
 
-  // 2) 하이스타 조커 시상 (정관장 상품권, 관리사항 1~7 적용 실적 기준)
-  const salesOk = salesA >= jokerMinMan;
+  // 2) 하이스타 조커 시상 (정관장 상품권, 주력상품 실적 기준)
+  const salesOk = salesMain >= jokerMinMan;
   const interviewOk = interviewJokerEl.checked;
   const jokerVoucher = salesOk ? jokerVoucherMan : 0;
   const jokerBadges = `주력상품 ${jokerMinMan}만↑ ${salesOk ? '인정' : '미인정'} · 면접참여 ${interviewOk ? '인정' : '선택 안 함'}`;

@@ -3,29 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>8월 3차 경기지역단 매출 시상금 계산기</title>
-<meta property="og:title" content="8월 3차 경기지역단 매출 시상금 계산기">
+<title>8월 4차 경기지역단 매출 시상금 계산기</title>
+<meta property="og:title" content="8월 4차 경기지역단 매출 시상금 계산기">
 <meta property="og:description" content="이번 주 인보험 실적을 입력하면 예상 시상금을 확인할 수 있어요">
-<meta property="og:image" content="https://gongjung.github.io/public/og-image.png?v=2">
+<meta property="og:image" content="https://gongjung.github.io/public/og-image.png?v=3">
 <meta property="og:url" content="https://gongjung.github.io/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>
   :root{
-    --pink:#e6007e;
-    --pink-strong:#c2006a;
-    --pink-soft:#fde7f2;
-    --blue-soft:#eaf2fb;
-    --blue-ink:#1a5fa8;
+    --orange:#ea7404;
+    --orange-strong:#c85e00;
+    --orange-soft:#fdeee0;
+    --navy:#003070;
+    --navy-soft:#e8eef6;
+    --navy-ink:#0a2a55;
     --yellow-soft:#fff6cf;
     --yellow-ink:#8a6d00;
-    --ink:#22262b;
-    --sub:#726b76;
-    --line:#e6e1e6;
-    --bg:#f7f5f7;
+    --ink:#1c2430;
+    --sub:#6c7480;
+    --line:#e5e7eb;
+    --bg:#f5f6f8;
     --card:#ffffff;
-    --muted-bg:#f2eef2;
+    --muted-bg:#f1f2f4;
     --good:#0f9d58;
     --good-soft:#e3f6ec;
     --warn:#d93025;
@@ -33,62 +35,66 @@
     --warn-border:#f6c6c1;
     --field-bg:#fafafa;
     --field-bg-focus:#ffffff;
-    --result-border:#f6c9e2;
-    --dash-border:#f0b8d9;
+    --result-border:#f7d9b8;
+    --dash-border:#f0c191;
     --radius:14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --pink:#ff5ba3;
-      --pink-soft:#3a1830;
-      --blue-soft:#182636;
-      --blue-ink:#7fb2e8;
+      --orange:#ff9d3d;
+      --orange-strong:#ffb768;
+      --orange-soft:#3a2712;
+      --navy:#7fa8e8;
+      --navy-soft:#182234;
+      --navy-ink:#bcd3f5;
       --yellow-soft:#332b14;
       --yellow-ink:#e8c766;
-      --ink:#f1edf1;
-      --sub:#b3a9b2;
-      --line:#3a333b;
-      --bg:#17151a;
-      --card:#211e24;
-      --muted-bg:#2a262c;
+      --ink:#f1eee9;
+      --sub:#aaa9a6;
+      --line:#37343a;
+      --bg:#15141a;
+      --card:#201f26;
+      --muted-bg:#2a282f;
       --good:#3ddc97;
       --good-soft:#173328;
       --warn:#ff8177;
       --warn-bg:#3a1f1d;
       --warn-border:#5c2e2a;
-      --field-bg:#28242a;
-      --field-bg-focus:#2f2a33;
-      --result-border:#4a2038;
-      --dash-border:#4a2038;
+      --field-bg:#28262c;
+      --field-bg-focus:#2f2d34;
+      --result-border:#4a3420;
+      --dash-border:#4a3420;
     }
   }
   :root[data-theme="dark"]{
-    --pink:#ff5ba3;
-    --pink-soft:#3a1830;
-    --blue-soft:#182636;
-    --blue-ink:#7fb2e8;
+    --orange:#ff9d3d;
+    --orange-strong:#ffb768;
+    --orange-soft:#3a2712;
+    --navy:#7fa8e8;
+    --navy-soft:#182234;
+    --navy-ink:#bcd3f5;
     --yellow-soft:#332b14;
     --yellow-ink:#e8c766;
-    --ink:#f1edf1;
-    --sub:#b3a9b2;
-    --line:#3a333b;
-    --bg:#17151a;
-    --card:#211e24;
-    --muted-bg:#2a262c;
+    --ink:#f1eee9;
+    --sub:#aaa9a6;
+    --line:#37343a;
+    --bg:#15141a;
+    --card:#201f26;
+    --muted-bg:#2a282f;
     --good:#3ddc97;
     --good-soft:#173328;
     --warn:#ff8177;
     --warn-bg:#3a1f1d;
     --warn-border:#5c2e2a;
-    --field-bg:#28242a;
-    --field-bg-focus:#2f2a33;
-    --result-border:#4a2038;
-    --dash-border:#4a2038;
+    --field-bg:#28262c;
+    --field-bg-focus:#2f2d34;
+    --result-border:#4a3420;
+    --dash-border:#4a3420;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
-    font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
     background:var(--bg);
     color:var(--ink);
     line-height:1.5;
@@ -98,30 +104,55 @@
     margin:0 auto;
     padding:20px 16px 60px;
   }
+  .page{display:none;}
+  .page.active{display:block;}
+
   header{
     text-align:center;
-    padding:18px 12px 22px;
+    padding:4px 12px 20px;
   }
   header .badge{
     display:inline-block;
-    background:var(--pink-strong);
+    background:var(--navy);
     color:#fff;
     font-weight:700;
     font-size:13px;
     padding:4px 12px;
     border-radius:999px;
-    margin-bottom:8px;
+    margin-bottom:10px;
   }
   header h1{
     font-size:21px;
     margin:0;
     font-weight:800;
+    color:var(--navy-ink);
   }
   header p{
     margin:6px 0 0;
     color:var(--sub);
     font-size:13px;
   }
+  .hero{
+    display:block;
+    width:100%;
+    border-radius:16px;
+    margin:0 0 18px;
+    box-shadow:0 4px 16px rgba(0,48,112,0.14);
+  }
+
+  .mascot-tip{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--navy-soft);
+    border-radius:14px;
+    padding:10px 14px 10px 10px;
+    margin-bottom:16px;
+  }
+  .mascot-tip img{width:48px;height:auto;display:block;flex:none;}
+  .mascot-tip .txt{font-size:12.5px;color:var(--navy-ink);font-weight:600;line-height:1.45;}
+  .mascot-tip .txt strong{font-weight:800;}
+
   .card{
     background:var(--card);
     border:1px solid var(--line);
@@ -139,8 +170,8 @@
     gap:8px;
   }
   .card h2 .num{
-    background:var(--pink-soft);
-    color:var(--pink);
+    background:var(--orange);
+    color:#fff;
     width:22px;height:22px;
     border-radius:50%;
     display:inline-flex;
@@ -163,18 +194,19 @@
     color:var(--sub);
     margin-top:5px;
   }
-  input[type="number"]{
+  input[type="number"],input[type="text"]{
     width:100%;
     padding:11px 12px;
     border:1px solid var(--line);
     border-radius:10px;
     font-size:15px;
+    font-family:inherit;
     background:var(--field-bg);
     color:var(--ink);
   }
-  input[type="number"]:focus{
+  input[type="number"]:focus,input[type="text"]:focus{
     outline:none;
-    border-color:var(--pink);
+    border-color:var(--orange);
     background:var(--field-bg-focus);
   }
   .inline-input{
@@ -188,7 +220,7 @@
     align-items:flex-start;
     gap:8px;
     padding:10px 12px;
-    background:var(--blue-soft);
+    background:var(--navy-soft);
     border-radius:10px;
     font-size:13px;
   }
@@ -217,13 +249,13 @@
   }
   .option input{display:none;}
   .option .opt-title{font-weight:700;margin-bottom:2px;}
-  .option .opt-value{color:var(--pink);font-weight:800;font-size:14px;font-variant-numeric:tabular-nums;}
+  .option .opt-value{color:var(--orange);font-weight:800;font-size:14px;font-variant-numeric:tabular-nums;}
   .option.selected{
-    border-color:var(--pink);
-    background:var(--pink-soft);
+    border-color:var(--orange);
+    background:var(--orange-soft);
   }
   .option:has(input:focus-visible){
-    outline:2px solid var(--pink);
+    outline:2px solid var(--orange);
     outline-offset:2px;
   }
   select{
@@ -232,12 +264,13 @@
     border:1px solid var(--line);
     border-radius:10px;
     font-size:14px;
+    font-family:inherit;
     background:var(--field-bg);
     color:var(--ink);
   }
   select:focus{
     outline:none;
-    border-color:var(--pink);
+    border-color:var(--orange);
     background:var(--field-bg-focus);
   }
   .no-target{
@@ -248,8 +281,37 @@
     padding:12px;
     text-align:center;
   }
+  .primary-btn{
+    display:block;
+    width:100%;
+    border:none;
+    cursor:pointer;
+    background:linear-gradient(135deg,var(--orange),var(--orange-strong));
+    color:#fff;
+    font-family:inherit;
+    font-size:16px;
+    font-weight:800;
+    padding:15px 16px;
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(234,116,4,0.32);
+  }
+  .primary-btn:active{transform:translateY(1px);}
+  .ghost-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:var(--navy);
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
+    padding:6px 0;
+    margin-bottom:6px;
+  }
   .result-card{
-    background:linear-gradient(135deg,var(--card),var(--pink-soft));
+    background:linear-gradient(135deg,var(--card),var(--orange-soft));
     border:1px solid var(--result-border);
   }
   .result-total-group{
@@ -272,11 +334,11 @@
   .result-total .value{
     font-size:26px;
     font-weight:900;
-    color:var(--pink);
+    color:var(--orange);
     font-variant-numeric:tabular-nums;
   }
   .result-total.result-total-item .value{
-    color:var(--blue-ink);
+    color:var(--navy);
     font-size:22px;
   }
   .breakdown{
@@ -304,7 +366,7 @@
     margin-left:6px;
   }
   .tag-cash{background:var(--good-soft);color:var(--good);}
-  .tag-item{background:var(--blue-soft);color:var(--blue-ink);}
+  .tag-item{background:var(--navy-soft);color:var(--navy);}
   .tag-muted{background:var(--muted-bg);color:var(--sub);}
   .note-box{
     background:var(--card);
@@ -350,143 +412,178 @@
 <body>
 <div class="wrap">
 
-  <header>
-    <span class="badge">8월 3차 · 15~21일 (4영업일)</span>
-    <h1>경기지역단 매출 시상금 계산기</h1>
-    <p>이번 주 인보험 실적을 입력하면 예상 시상금을 확인할 수 있어요</p>
-  </header>
+  <!-- ===================== PAGE 1: 기본정보 입력 ===================== -->
+  <div class="page active" id="page1">
+    <img class="hero" src="public/hero-4cha.png" alt="경기지역단 8월 4차 시상금 계산기">
 
-  <!-- 입력: 실적 -->
-  <div class="card">
-    <h2><span class="num">1</span>이번 주 인보험 실적 입력</h2>
-    <div class="field">
-      <label for="salesA">관리사항 1~7 적용 실적 (만원)</label>
-      <input type="number" id="salesA" min="0" placeholder="예: 45" inputmode="decimal">
-      <div class="hint">① 기본 시상 · ③ 리딩-플래너 시상 기준 실적이에요. 집중관리계약·본인계약·실손 등은 제외한 실적을 입력하세요.</div>
-    </div>
-    <div class="field">
-      <label for="salesB">관리사항 2~7 미적용 실적 (만원)</label>
-      <input type="number" id="salesB" min="0" placeholder="예: 60" inputmode="decimal">
-      <div class="hint">② 휴가철 인보험 참여 시상 기준 실적이에요. 집중관리계약·본인계약·실손 등을 포함한 전체 실적을 입력하세요.</div>
-    </div>
-    <div class="field">
-      <label for="haicap">이번 주 하이캡배수</label>
-      <input type="number" id="haicap" min="0" placeholder="예: 22" inputmode="decimal">
-      <div class="hint">하이캡배수 20 이상이면 우대 시상율이 적용돼요. (운전자·바이크·펫·행복가득생활·퍼펙트케어 보종은 집계 제외)</div>
+    <div class="mascot-tip">
+      <img src="public/hdhs-cheer.png" alt="ㅎㄷㅎㅅ 캐릭터">
+      <div class="txt">ㅎㄷㅎㅅ가 도와줄게요!<br><strong>기본정보만 입력하면 4주차 시상금을 바로 확인할 수 있어요.</strong></div>
     </div>
 
-    <div class="field">
-      <div class="checkbox-row">
-        <input type="checkbox" id="newAgent">
-        <div class="txt">
-          <strong>1~4차월 신인이거나, 이번달 인보험 100만원 이상 달성</strong>
-          <span>누계 하이캡배수 15 이상이면 기본 시상 구간 시상율이 100%로 우대돼요.</span>
+    <div class="card">
+      <h2><span class="num">1</span>기본정보 입력</h2>
+      <div class="field">
+        <label for="agentName">설계사 이름</label>
+        <input type="text" id="agentName" placeholder="예: 홍길동" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="salesA">관리사항 1~7 적용 실적 (만원)</label>
+        <input type="number" id="salesA" min="0" placeholder="예: 45" inputmode="decimal">
+        <div class="hint">이번 주(22~28일) 인보험 실적이에요. ①기본 시상 · ②하이스타 조커 시상 · ③리딩-플래너 시상 모두 이 실적을 기준으로 계산돼요.</div>
+      </div>
+      <div class="field">
+        <label for="haicap">이번 주 하이캡배수</label>
+        <input type="number" id="haicap" min="0" placeholder="예: 22" inputmode="decimal">
+        <div class="hint">하이캡배수 20 이상이면 우대 시상율이 적용돼요. (운전자·바이크·펫·행복가득생활·퍼펙트케어 보종은 집계 제외)</div>
+      </div>
+
+      <div class="field">
+        <div class="checkbox-row">
+          <input type="checkbox" id="newAgent">
+          <div class="txt">
+            <strong>1~4차월 신인이거나, 이번달 인보험 100만원 이상 달성</strong>
+            <span>누계 하이캡배수 15 이상이면 기본 시상 구간 시상율이 100%로 우대돼요.</span>
+          </div>
+        </div>
+        <div class="sub-panel" id="cumPanel">
+          <div class="field" style="margin-top:10px;">
+            <label for="cumHaicap">누계 하이캡배수</label>
+            <input type="number" id="cumHaicap" min="0" placeholder="예: 16">
+          </div>
         </div>
       </div>
-      <div class="sub-panel" id="cumPanel">
-        <div class="field" style="margin-top:10px;">
-          <label for="cumHaicap">누계 하이캡배수</label>
-          <input type="number" id="cumHaicap" min="0" placeholder="예: 16">
+
+      <div class="field">
+        <div class="checkbox-row">
+          <input type="checkbox" id="teamAchieved">
+          <div class="txt">
+            <strong>우리 영업팀, 이번 주 구간목표1 달성</strong>
+            <span>팀이 구간목표1을 달성하면 기본 시상에 추가 금액이 우대로 붙어요.</span>
+          </div>
         </div>
       </div>
     </div>
+
+    <button class="primary-btn" id="goResultBtn">내 시상금 확인하기 →</button>
   </div>
 
-  <!-- 결과 -->
-  <div class="card result-card">
-    <h2><span class="num">★</span>예상 시상금</h2>
-    <div class="result-total-group">
-      <div class="result-total">
-        <div class="label">현금 시상금 합계</div>
-        <div class="value" id="cashTotalValue">0원</div>
+  <!-- ===================== PAGE 2: 4주차 시상금 결과 ===================== -->
+  <div class="page" id="page2">
+    <button class="ghost-btn" id="backBtn">← 기본정보 다시 입력</button>
+
+    <header>
+      <span class="badge">8월 4차 · 22~28일 (5영업일)</span>
+      <h1 id="greeting">경기지역단 매출 시상금 계산기</h1>
+      <p>입력하신 실적 기준으로 계산된 예상 시상금이에요</p>
+    </header>
+
+    <!-- 결과 -->
+    <div class="card result-card">
+      <h2><span class="num">★</span>예상 시상금</h2>
+      <div class="result-total-group">
+        <div class="result-total">
+          <div class="label">현금 시상금 합계</div>
+          <div class="value" id="cashTotalValue">0원</div>
+        </div>
+        <div class="result-total result-total-item">
+          <div class="label">물품 시상 상당액 합계</div>
+          <div class="value" id="itemTotalValue">0원</div>
+        </div>
       </div>
-      <div class="result-total result-total-item">
-        <div class="label">물품 시상 상당액 합계</div>
-        <div class="value" id="itemTotalValue">0원</div>
+      <div class="breakdown">
+        <div class="row">
+          <div class="r-label">① 기본 시상 <span class="tag tag-cash">현금</span><small id="tier1Desc">해당 구간 없음</small></div>
+          <div class="r-value" id="tier1Value">0원</div>
+        </div>
+        <div class="row">
+          <div class="r-label">② 하이스타 조커 시상 <span class="tag tag-item">물품</span><small id="tier2Desc">해당 구간 없음</small></div>
+          <div class="r-value" id="tier2Value">0원</div>
+        </div>
+        <div class="row">
+          <div class="r-label">③ 리딩-플래너 시상 <span class="tag" id="tier3Badge"></span><small id="tier3Desc">순위에 따라 별도 지급 (아래에서 선택)</small></div>
+          <div class="r-value" id="tier3Value">-</div>
+        </div>
+      </div>
+      <div id="capWarn"></div>
+      <div class="note-box">
+        ※ "현금 시상금"은 계좌로 지급되는 금액이고, "물품 시상"은 상품권(② 정관장) 또는 순금(③ 금·은·동메달)으로 지급돼요. 금·은·동메달은 중량 기준 지급이라 상당액 합계에는 포함하지 않았습니다.
       </div>
     </div>
-    <div class="breakdown">
-      <div class="row">
-        <div class="r-label">① 기본 시상 <span class="tag tag-cash">현금</span><small id="tier1Desc">해당 구간 없음</small></div>
-        <div class="r-value" id="tier1Value">0원</div>
-      </div>
-      <div class="row">
-        <div class="r-label">② 휴가철 인보험 참여 시상 <span class="tag tag-item">물품</span><small id="tier2Desc">해당 구간 없음</small></div>
-        <div class="r-value" id="tier2Value">0원</div>
-      </div>
-      <div class="row">
-        <div class="r-label">③ 리딩-플래너 시상 <span class="tag" id="tier3Badge"></span><small id="tier3Desc">순위에 따라 별도 지급 (아래에서 선택)</small></div>
-        <div class="r-value" id="tier3Value">-</div>
+
+    <!-- 하이스타 조커 시상 -->
+    <div class="card">
+      <h2><span class="num">2</span>하이스타 조커 시상 (+명절 대비 정관장)</h2>
+      <div id="jokerBox"></div>
+      <div class="field" style="margin-top:14px;">
+        <div class="checkbox-row">
+          <input type="checkbox" id="interviewJoker">
+          <div class="txt">
+            <strong>3~4주차(15~28일) 면접 참여</strong>
+            <span>면접 참여로도 하이스타 조커가 인정돼요 (정관장 별도 지급 없음, 전산 입력 완료 건만 집계).</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div id="capWarn"></div>
-    <div class="note-box">
-      ※ "현금 시상금"은 계좌로 지급되는 금액이고, "물품 시상"은 상품(②) 또는 순금(③ 금·은·동메달)으로 지급돼요. 금·은·동메달은 중량 기준 지급이라 상당액 합계에는 포함하지 않았습니다.
+
+    <!-- 리딩플래너 -->
+    <div class="card">
+      <h2><span class="num">3</span>리딩-플래너 시상 (인보험 50만↑, 지역단 순위)</h2>
+      <div id="tier3Block">
+        <div class="no-target">인보험 50만원 이상 달성 시 순위를 선택할 수 있어요.</div>
+      </div>
     </div>
+
+    <details>
+      <summary>주요 관리사항 (참고)</summary>
+      <ul>
+        <li>
+          <strong>① 기본 시상</strong> <span class="tag tag-muted">관리사항 1~7 적용</span>
+          <ul>
+            <li>1~4차월 및 인100만↑ 달성자, 누계 하이캡배수 15 이상 시 기본 시상율 100% 우대</li>
+            <li>영업팀이 구간목표1을 달성하면 정액 구간은 구간 시상금의 30%, 100만↑ 구간은 시상율 +30%p가 추가돼요</li>
+            <li>물품 포함 총 지급율은 매출 대비 160% 이내로 적용</li>
+            <li>하이캡배수 집계 제외 보종: 운전자, 바이크, 펫, 행복가득생활, 퍼펙트 케어</li>
+          </ul>
+        </li>
+        <li>
+          <strong>② 하이스타 조커 시상</strong> <span class="tag tag-muted">관리사항 1~7 적용</span>
+          <ul>
+            <li>주력상품 10만원↑ 참여 시 하이스타 조커 인정 + 정관장 5만원권 지급 (금액권 매진 시 현금 대체 가능)</li>
+            <li>3~4주차 면접 참여만으로도 조커는 인정되지만 정관장은 별도 지급되지 않음</li>
+          </ul>
+        </li>
+        <li>
+          <strong>③ 리딩-플래너 시상</strong> <span class="tag tag-muted">관리사항 1~7 적용</span>
+        </li>
+        <li>정확한 지급 기준은 시상 지급 관련 차등 기준(별첨) 시트 및 관리사항 시트를 확인하세요</li>
+      </ul>
+    </details>
+
+    <footer>본 계산기는 8월 4차 경기지역단 매출 시상안 자료를 기준으로 제작한 참고용 도구이며, 실제 지급액은 회사 정산 기준을 따릅니다.</footer>
   </div>
 
-  <!-- 부문 참여시상 선택 -->
-  <div class="card">
-    <h2><span class="num">2</span>휴가철 인보험 참여 시상 선택</h2>
-    <div id="tier2Options"></div>
-  </div>
-
-  <!-- 리딩플래너 -->
-  <div class="card">
-    <h2><span class="num">3</span>리딩-플래너 시상 (인보험 50만↑, 지역단 순위)</h2>
-    <div id="tier3Block">
-      <div class="no-target">인보험 50만원 이상 달성 시 순위를 선택할 수 있어요.</div>
-    </div>
-  </div>
-
-  <details>
-    <summary>주요 관리사항 (참고)</summary>
-    <ul>
-      <li>
-        <strong>① 기본 시상</strong> <span class="tag tag-muted">관리사항 1~7 적용</span>
-        <ul>
-          <li>1~4차월 및 인100만↑ 달성자, 누계 하이캡배수 15 이상 시 기본 시상율 100% 우대</li>
-          <li>물품 포함 총 지급율은 매출 대비 160% 이내로 적용</li>
-          <li>하이캡배수 집계 제외 보종: 운전자, 바이크, 펫, 행복가득생활, 퍼펙트 케어</li>
-        </ul>
-      </li>
-      <li>
-        <strong>② 휴가철 인보험 참여 시상</strong> <span class="tag tag-muted">관리사항 2~7 미적용</span>
-        <ul>
-          <li>주유권 브랜드는 구매처 사정에 따라 변동될 수 있음</li>
-        </ul>
-      </li>
-      <li>
-        <strong>③ 리딩-플래너 시상</strong> <span class="tag tag-muted">관리사항 1~7 적용</span>
-      </li>
-      <li>정확한 지급 기준은 시상 지급 관련 차등 기준(별첨) 시트 및 관리사항 시트를 확인하세요</li>
-    </ul>
-  </details>
-
-  <footer>본 계산기는 8월 3차 경기지역단 매출 시상안 이미지를 기준으로 제작한 참고용 도구이며, 실제 지급액은 회사 정산 기준을 따릅니다.</footer>
 </div>
 
 <script>
 const fmt = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const man = n => n * 10000;
 
-// 기본 시상 구간 (내림차순, 인보험 만원 기준)
+// ① 기본 시상 구간 (내림차순, 인보험 만원 기준)
+// teamBonus: 영업팀 구간목표1 달성 시 추가 금액(만원) / percent 구간은 teamBonusRate(시상율 가산)
 const baseTiers = [
-  { min:100, type:'percent', base:0.6, premium:0.8 },
-  { min:70,  type:'fixed',   base:42,  premium:56 },
-  { min:50,  type:'fixed',   base:30,  premium:40 },
-  { min:40,  type:'fixed',   base:24,  premium:32 },
-  { min:30,  type:'fixed',   base:18,  premium:24 },
-  { min:20,  type:'fixed',   base:12,  premium:16 },
-  { min:10,  type:'fixed',   base:6,   premium:8 },
+  { min:100, type:'percent', base:0.5, premium:0.7, teamBonusRate:0.3 },
+  { min:70,  type:'fixed',   base:35,  premium:49, teamBonus:21 },
+  { min:50,  type:'fixed',   base:25,  premium:35, teamBonus:15 },
+  { min:40,  type:'fixed',   base:20,  premium:28, teamBonus:12 },
+  { min:30,  type:'fixed',   base:15,  premium:21, teamBonus:9 },
+  { min:20,  type:'fixed',   base:10,  premium:14, teamBonus:6 },
+  { min:10,  type:'fixed',   base:5,   premium:7,  teamBonus:3 },
 ];
 
-// 휴가철 인보험 참여 시상 구간
-const participationTiers = [
-  { min:30, item:'테팔 무선청소기', itemValue:15, voucherLabel:'CJ 스팸 84호 3개', voucherValue:15 },
-  { min:20, item:'필립스 에어프라이어', itemValue:10, voucherLabel:'CJ 스팸 84호 2개', voucherValue:10 },
-  { min:10, item:'정관장 홍삼 활기력', itemValue:5, voucherLabel:'CJ 스팸 84호 1개', voucherValue:5 },
-];
+// ② 하이스타 조커 시상 기준 (관리사항 1~7 적용 실적)
+const jokerMinMan = 10;
+const jokerVoucherMan = 5; // [정관장] 5만원권
 
 const rankOptions = [
   { value:'none', label:'선택 안 함 / 순위 미확정', cash:0, gold:0 },
@@ -497,90 +594,86 @@ const rankOptions = [
   { value:'6-10', label:'6~10위 (5만원)', cash:5, gold:0 },
 ];
 
-let selectedParticipation = 'voucher'; // 'item' or 'voucher'
 let selectedRank = 'none';
 
+// ---- Page 1 요소 ----
+const agentNameEl = document.getElementById('agentName');
 const salesAEl = document.getElementById('salesA');
-const salesBEl = document.getElementById('salesB');
 const haicapEl = document.getElementById('haicap');
 const newAgentEl = document.getElementById('newAgent');
 const cumPanel = document.getElementById('cumPanel');
 const cumHaicapEl = document.getElementById('cumHaicap');
+const teamAchievedEl = document.getElementById('teamAchieved');
+const goResultBtn = document.getElementById('goResultBtn');
+const backBtn = document.getElementById('backBtn');
+const page1 = document.getElementById('page1');
+const page2 = document.getElementById('page2');
+const interviewJokerEl = document.getElementById('interviewJoker');
 
 newAgentEl.addEventListener('change', () => {
   cumPanel.classList.toggle('show', newAgentEl.checked);
+});
+
+goResultBtn.addEventListener('click', () => {
+  page1.classList.remove('active');
+  page2.classList.add('active');
+  window.scrollTo(0, 0);
   render();
 });
-[salesAEl, salesBEl, haicapEl, cumHaicapEl].forEach(el => el.addEventListener('input', render));
+
+backBtn.addEventListener('click', () => {
+  page2.classList.remove('active');
+  page1.classList.add('active');
+  window.scrollTo(0, 0);
+});
+
+interviewJokerEl.addEventListener('change', render);
 
 function readMan(el){
   const v = parseFloat(el.value);
   return isNaN(v) || v < 0 ? 0 : v;
 }
-function getSalesA(){ return readMan(salesAEl); } // 관리사항 1~7 적용 실적 (① ③ 기준)
-function getSalesB(){ return readMan(salesBEl); } // 관리사항 2~7 미적용 실적 (② 기준)
+function getSalesA(){ return readMan(salesAEl); }
 
 function findBaseTier(salesMan){
   return baseTiers.find(t => salesMan >= t.min) || null;
 }
 
-function findParticipationTier(salesMan){
-  return participationTiers.find(t => salesMan >= t.min) || null;
-}
-
 function computeBaseAward(salesMan){
   const tier = findBaseTier(salesMan);
-  if(!tier) return { amountMan:0, desc:'10만원 이상부터 시상 대상입니다.', tier:null };
+  if(!tier) return { amountMan:0, desc:'10만원 이상부터 시상 대상입니다.' };
 
-  const haicap = parseFloat(haicapEl.value) || 0;
+  const haicap = readMan(haicapEl);
   const isPremium = haicap >= 20;
-  const cumHaicap = parseFloat(cumHaicapEl.value) || 0;
+  const cumHaicap = readMan(cumHaicapEl);
   const specialFull = newAgentEl.checked && cumHaicap >= 15;
+  const teamAchieved = teamAchievedEl.checked;
 
   let amountMan, rateDesc;
   if(specialFull){
     amountMan = salesMan * 1.0;
     rateDesc = `${tier.min}만↑ 구간 · 시상율 100% (1~4차월 신인/100만↑ 우대 적용)`;
   } else if(tier.type === 'percent'){
-    let rate = isPremium ? tier.premium : tier.base;
+    const rate = (isPremium ? tier.premium : tier.base) + (teamAchieved ? tier.teamBonusRate : 0);
     amountMan = salesMan * rate;
-    rateDesc = `${tier.min}만↑ 구간 · 시상율 ${Math.round(rate*100)}%${isPremium ? ' (하이캡배수 우대)' : ''}`;
+    const parts = [isPremium ? '하이캡배수 우대' : null, teamAchieved ? '영업팀 우대' : null].filter(Boolean);
+    rateDesc = `${tier.min}만↑ 구간 · 시상율 ${Math.round(rate*100)}%${parts.length ? ' ('+parts.join('·')+')' : ''}`;
   } else {
-    amountMan = isPremium ? tier.premium : tier.base;
-    rateDesc = `${tier.min}만↑ 구간 · 정액 ${amountMan}만원${isPremium ? ' (하이캡배수 우대)' : ''}`;
+    amountMan = (isPremium ? tier.premium : tier.base) + (teamAchieved ? tier.teamBonus : 0);
+    const parts = [isPremium ? '하이캡배수 우대' : null, teamAchieved ? '영업팀 우대' : null].filter(Boolean);
+    rateDesc = `${tier.min}만↑ 구간 · 정액 ${amountMan}만원${parts.length ? ' ('+parts.join('·')+')' : ''}`;
   }
-  return { amountMan, desc: rateDesc, tier };
+  return { amountMan, desc: rateDesc };
 }
 
-function renderParticipationOptions(){
-  const salesB = getSalesB();
-  const tier = findParticipationTier(salesB);
-  const box = document.getElementById('tier2Options');
-  if(!tier){
-    box.innerHTML = '<div class="no-target">인보험(관리사항 2~7 미적용 실적) 10만원 이상 참여 시 상품 중 택1로 시상 대상이 돼요.</div>';
-    return;
+function renderJokerBox(salesA){
+  const box = document.getElementById('jokerBox');
+  const salesOk = salesA >= jokerMinMan;
+  if(salesOk){
+    box.innerHTML = `<div class="hint">주력상품 ${jokerMinMan}만↑ 참여 · 하이스타 조커 인정 + [정관장] ${jokerVoucherMan}만원권 지급 대상이에요.</div>`;
+  } else {
+    box.innerHTML = `<div class="no-target">인보험(관리사항 1~7 적용 실적) ${jokerMinMan}만원 이상 참여 시 하이스타 조커 인정 + 정관장 상품권이 지급돼요.</div>`;
   }
-  box.innerHTML = `
-    <div class="hint" style="margin-bottom:10px;">인보험 ${tier.min}만↑ 참여 구간 · 아래 중 하나를 선택하세요</div>
-    <div class="option-group">
-      <label class="option ${selectedParticipation==='item' ? 'selected':''}" data-choice="item">
-        <input type="radio" name="p2" value="item">
-        <div class="opt-title">${tier.item}</div>
-        <div class="opt-value">${tier.itemValue}만원 상당</div>
-      </label>
-      <label class="option ${selectedParticipation==='voucher' ? 'selected':''}" data-choice="voucher">
-        <input type="radio" name="p2" value="voucher">
-        <div class="opt-title">${tier.voucherLabel}</div>
-        <div class="opt-value">${tier.voucherValue}만원 상당</div>
-      </label>
-    </div>
-  `;
-  box.querySelectorAll('.option').forEach(el => {
-    el.addEventListener('click', () => {
-      selectedParticipation = el.dataset.choice;
-      render();
-    });
-  });
 }
 
 function renderRankBlock(){
@@ -614,27 +707,27 @@ function renderRankBlock(){
 
 function render(){
   const salesA = getSalesA();
-  const salesB = getSalesB();
+  const name = agentNameEl.value.trim();
 
-  renderParticipationOptions();
+  document.getElementById('greeting').textContent = name ? `${name}님의 8월 4차 예상 시상금` : '경기지역단 매출 시상금 계산기';
+
+  renderJokerBox(salesA);
   renderRankBlock();
 
-  // 1) 기본 시상 (관리사항 1~7 적용 실적 기준)
+  // 1) 기본 시상
   const base = computeBaseAward(salesA);
   document.getElementById('tier1Desc').textContent = base.desc;
   document.getElementById('tier1Value').textContent = fmt(man(base.amountMan));
 
-  // 2) 참여 시상 (관리사항 2~7 미적용 실적 기준)
-  const pTier = findParticipationTier(salesB);
-  let pAmountMan = 0, pDesc = '해당 구간 없음';
-  if(pTier){
-    pAmountMan = selectedParticipation === 'item' ? pTier.itemValue : pTier.voucherValue;
-    pDesc = `${pTier.min}만↑ · ${selectedParticipation === 'item' ? pTier.item : pTier.voucherLabel}`;
-  }
-  document.getElementById('tier2Desc').textContent = pDesc;
-  document.getElementById('tier2Value').textContent = fmt(man(pAmountMan));
+  // 2) 하이스타 조커 시상 (정관장 상품권, 관리사항 1~7 적용 실적 기준)
+  const salesOk = salesA >= jokerMinMan;
+  const interviewOk = interviewJokerEl.checked;
+  const jokerVoucher = salesOk ? jokerVoucherMan : 0;
+  const jokerBadges = `주력상품 ${jokerMinMan}만↑ ${salesOk ? '인정' : '미인정'} · 면접참여 ${interviewOk ? '인정' : '선택 안 함'}`;
+  document.getElementById('tier2Desc').textContent = salesOk || interviewOk ? jokerBadges : '해당 구간 없음';
+  document.getElementById('tier2Value').textContent = salesOk ? fmt(man(jokerVoucher)) : '0원';
 
-  // 3) 리딩플래너 (관리사항 1~7 적용 실적 기준)
+  // 3) 리딩플래너
   const rank = rankOptions.find(r => r.value === selectedRank);
   let rankAmountMan = 0, rankText = '-';
   const tier3Badge = document.getElementById('tier3Badge');
@@ -662,8 +755,8 @@ function render(){
   const cashTotalMan = base.amountMan + rankAmountMan;
   document.getElementById('cashTotalValue').textContent = fmt(man(cashTotalMan));
 
-  // 물품 시상 상당액 합계: ② 참여 시상 상당액 (③ 금·은·동메달은 중량 지급이라 상당액 미포함)
-  const itemTotalMan = pAmountMan;
+  // 물품 시상 상당액 합계: ② 정관장 상품권 (③ 금·은·동메달은 중량 지급이라 상당액 미포함)
+  const itemTotalMan = jokerVoucher;
   document.getElementById('itemTotalValue').textContent = fmt(man(itemTotalMan));
 
   // 160% 캡 경고 (물품 상당액 포함, 관리사항 1~7 적용 실적 대비 총 지급율 기준)

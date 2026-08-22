@@ -451,6 +451,18 @@
     margin-top:10px;
     font-weight:600;
   }
+  .next-tier-box{
+    background:var(--navy-soft);
+    border:1px solid var(--navy);
+    color:var(--navy-ink);
+    border-radius:10px;
+    padding:11px 13px;
+    font-size:12.5px;
+    line-height:1.55;
+    margin-top:12px;
+    font-weight:600;
+  }
+  .next-tier-box strong{color:var(--orange-strong);}
   details{
     margin-top:14px;
     font-size:12.5px;
@@ -576,6 +588,7 @@
           <div class="r-value" id="tier3Value">-</div>
         </div>
       </div>
+      <div id="nextTierBox"></div>
       <div id="capWarn"></div>
       <div class="note-box">
         ※ "현금 시상금"은 계좌로 지급되는 금액이고, "물품 시상"은 상품권(② 정관장) 또는 순금(③ 금·은·동메달)으로 지급돼요. 금·은·동메달은 중량 기준 지급이라 상당액 합계에는 포함하지 않았습니다.
@@ -762,6 +775,29 @@ function computeBaseAward(salesMan){
   return { amountMan, desc: rateDesc };
 }
 
+function fmtNum(n){
+  const r = Math.round(n * 10) / 10;
+  return Number.isInteger(r) ? String(r) : r.toFixed(1);
+}
+
+// ① 기본 시상 다음 구간까지 잔여 실적 안내
+function renderNextTierBox(salesA, currentAward){
+  const box = document.getElementById('nextTierBox');
+  const ascMins = [...new Set(baseTiers.map(t => t.min))].sort((a,b) => a - b);
+  const nextMin = ascMins.find(m => m > salesA);
+
+  if(nextMin === undefined){
+    box.innerHTML = `<div class="next-tier-box">🏆 이미 최고 구간(100만원 이상 정률 시상)에 도달했어요! 실적이 늘어날수록 시상금도 비례해서 늘어나요.</div>`;
+    return;
+  }
+
+  const remainMan = Math.max(0, nextMin - salesA);
+  const nextAward = computeBaseAward(nextMin);
+  const diffMan = Math.max(0, nextAward.amountMan - currentAward.amountMan);
+
+  box.innerHTML = `<div class="next-tier-box">📈 실적 <strong>${fmtNum(remainMan)}만원</strong>만 더 하면 <strong>${nextMin}만원↑ 구간</strong>에 도달해요! ① 기본 시상금이 ${fmt(man(currentAward.amountMan))} → ${fmt(man(nextAward.amountMan))}로 <strong>+${fmt(man(diffMan))}</strong> 늘어나요.</div>`;
+}
+
 function renderJokerBox(salesMain){
   const box = document.getElementById('jokerBox');
   const salesOk = salesMain >= jokerMinMan;
@@ -815,6 +851,7 @@ function render(){
   const base = computeBaseAward(salesA);
   document.getElementById('tier1Desc').textContent = base.desc;
   document.getElementById('tier1Value').textContent = fmt(man(base.amountMan));
+  renderNextTierBox(salesA, base);
 
   // 2) 하이스타 조커 시상 (정관장 상품권, 주력상품 실적 기준)
   const salesOk = salesMain >= jokerMinMan;
